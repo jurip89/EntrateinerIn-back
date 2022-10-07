@@ -83,6 +83,8 @@ module.exports = {
           amount: 400,
           location: "Amsterdam",
           userId: 1,
+          lat: 41,
+          lng:35,
           categoryId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -97,6 +99,8 @@ module.exports = {
           amount: 400,
           location: "Amsterdam",
           userId: 1,
+          lat: 86,
+          lng:61,
           categoryId: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -110,6 +114,8 @@ module.exports = {
           paid: true,
           amount: 400,
           location: "Amsterdam",
+          lat: 48,
+          lng:65,
           userId: 1,
           categoryId: 4,
           createdAt: new Date(),
@@ -126,6 +132,8 @@ module.exports = {
           location: "Amsterdam",
           userId: 1,
           categoryId: 2,
+          lat: 88,
+          lng:-63,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -300,50 +308,13 @@ module.exports = {
       ],
       {}
     );
-    await queryInterface.bulkInsert(
-      "jobLocations",
-      [
-        {
-          id: 1,
-          lat: 44,
-          lon: 55,
-          jobId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: 2,
-          lat: 43,
-          lon: 50,
-          jobId: 3,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: 3,
-          lat: 104,
-          lon: 84,
-          jobId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        {
-          id: 4,
-          lat: 32,
-          lon: 184,
-          jobId: 1,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-      ],
-      {}
-    );
+    'lng'
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("userRoles", null, {});
     await queryInterface.bulkDelete("applicants", null, {});
-    await queryInterface.bulkDelete("jobLocations", null, {});
+   
 
     await queryInterface.bulkDelete("roles", null, {});
     await queryInterface.bulkDelete("users", null, {});

@@ -25,9 +25,9 @@ router.get("/:id", async (req, res, next) => {
   try {
     const theOne = await Job.findByPk(id, {
       include: [
-        { model: User, attributes: ["name", "email"] },
+        { model: User, attributes: ["name", "email",'profilePic'] },
         { model: Category, attributes: ["name"] },
-        { model: Location, required: false, attributes: ["lat", "lon"] },
+        
       ],
     });
     !theOne && res.status(404).send("no Job Found");

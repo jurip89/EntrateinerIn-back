@@ -12,7 +12,6 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       job.belongsTo(models.user, { foreignKey: 'userId' })
       job.belongsToMany(models.user, { through:'applicants', foreignKey:'jobId'})
-      job.hasMany(models.jobLocation,{foreignKey:'jobId'})
       job.belongsTo(models.role,{foreignKey:'categoryId'})
     }
   }
@@ -22,7 +21,9 @@ module.exports = (sequelize, DataTypes) => {
     duration: {type:DataTypes.STRING,allowNull:false},
     paid: {type:DataTypes.BOOLEAN,allowNull:false},
     amount: {type:DataTypes.INTEGER},
-    location: {type:DataTypes.STRING,allowNull:false}
+    location: { type: DataTypes.STRING, allowNull: false },
+    lat:{type:DataTypes.INTEGER,allowNull:false},
+    lng:{type:DataTypes.INTEGER,allowNull:false}
   }, {
     sequelize,
     modelName: 'job',
