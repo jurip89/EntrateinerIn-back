@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const User = require("../models").user;
-const Image = require('../models').image
+const Image = require('../models').image;
+const Review =require('../models').review
 const router = new Router();
 
 router.get("/", async (req, res, next) => {
