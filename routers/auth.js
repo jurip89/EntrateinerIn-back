@@ -4,11 +4,9 @@ const { toJWT } = require("../auth/jwt");
 const authMiddleware = require("../auth/middleware");
 const User = require("../models/").user;
 
-
 const router = new Router();
 
-
-//login 
+//login
 router.post("/login", async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -36,7 +34,6 @@ router.post("/login", async (req, res, next) => {
   }
 });
 
-
 //signup
 router.post("/signup", async (req, res) => {
   const { email, password, name } = req.body;
@@ -49,6 +46,7 @@ router.post("/signup", async (req, res) => {
       email,
       password: bcrypt.hashSync(password, 10),
       name,
+      
     });
 
     delete newUser.dataValues["password"]; // don't send back the password hash
@@ -75,6 +73,5 @@ router.get("/me", authMiddleware, async (req, res) => {
   delete req.user.dataValues["password"];
   res.status(200).send({ ...req.user.dataValues });
 });
-
 
 module.exports = router;
