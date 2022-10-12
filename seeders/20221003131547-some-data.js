@@ -1,5 +1,5 @@
 "use strict";
-const bcrypt =require('bcrypt')
+const bcrypt = require("bcrypt");
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
           id: 1,
           name: "John Malcovic",
           email: "a@a.a",
-          password: "1qazxsw2",
+          password: bcrypt.hashSync("1qazxsw2", 10),
           intro: "I love cookies",
           isRecruiter: true,
           createdAt: new Date(),
@@ -21,7 +21,7 @@ module.exports = {
           id: 2,
           name: "Jane Doe",
           email: "a@a.b",
-          password: bcrypt.hashSync("1qazxsw2",10),
+          password: bcrypt.hashSync("1qazxsw2", 10),
           intro: "I love nutella",
           isRecruiter: false,
           createdAt: new Date(),
@@ -31,7 +31,7 @@ module.exports = {
           id: 3,
           name: "Joe Doe",
           email: "a@a.as",
-          password: bcrypt.hashSync("1qazxsw2",10),
+          password: bcrypt.hashSync("1qazxsw2", 10),
           intro: "I love macadamia",
           isRecruiter: false,
           createdAt: new Date(),
@@ -41,7 +41,7 @@ module.exports = {
           id: 4,
           name: "Jenny Doe",
           email: "a@a.aa",
-          password: bcrypt.hashSync("1qazxsw2",10),
+          password: bcrypt.hashSync("1qazxsw2", 10),
           intro: "I love radio",
           isRecruiter: false,
           createdAt: new Date(),
@@ -84,8 +84,8 @@ module.exports = {
           amount: 400,
           location: "Amsterdam",
           userId: 1,
-          lat: 54.66,
-          lng:4,
+          lat: 52.083713,
+          lng: 4.277039,
           categoryId: 1,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -98,10 +98,10 @@ module.exports = {
           duration: "3 months",
           paid: true,
           amount: 400,
-          location: "Amsterdam",
+          location: "Den Haag",
           userId: 1,
-          lat: 53.36,
-          lng:4.9,
+          lat: 52.083713,
+          lng: 4.277039,
           categoryId: 3,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -116,7 +116,7 @@ module.exports = {
           amount: 400,
           location: "Amsterdam",
           lat: 51,
-          lng:5,
+          lng: 5,
           userId: 1,
           categoryId: 4,
           createdAt: new Date(),
@@ -134,7 +134,7 @@ module.exports = {
           userId: 1,
           categoryId: 2,
           lat: 52.3676,
-          lng:4.9041,
+          lng: 4.9041,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -146,11 +146,11 @@ module.exports = {
           duration: "3 months",
           paid: true,
           amount: 400,
-          location: "Amsterdam",
+          location: "The Hague",
           userId: 1,
           categoryId: 2,
-          lat: 45.22,
-          lng:-4.9041,
+          lat: 52.083683,
+          lng: 4.288116,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -166,7 +166,7 @@ module.exports = {
           userId: 1,
           categoryId: 2,
           lat: 49,
-          lng:-4,
+          lng: -4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -341,13 +341,12 @@ module.exports = {
       ],
       {}
     );
-    'lng'
+    ("lng");
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("userRoles", null, {});
     await queryInterface.bulkDelete("applicants", null, {});
-   
 
     await queryInterface.bulkDelete("roles", null, {});
     await queryInterface.bulkDelete("users", null, {});
