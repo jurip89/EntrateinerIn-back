@@ -262,7 +262,7 @@ module.exports = {
       [
         {
           id: 1,
-          userId: 2,
+          applicantId: 2,
           jobId: 3,
           status: "pending",
           createdAt: new Date(),
@@ -270,7 +270,7 @@ module.exports = {
         },
         {
           id: 2,
-          userId: 3,
+          applicantId: 3,
           jobId: 4,
           status: "pending",
           createdAt: new Date(),
@@ -278,7 +278,7 @@ module.exports = {
         },
         {
           id: 3,
-          userId: 3,
+          applicantId: 3,
           jobId: 3,
           status: "pending",
           createdAt: new Date(),
@@ -286,7 +286,7 @@ module.exports = {
         },
         {
           id: 4,
-          userId: 4,
+          applicantId: 4,
           jobId: 3,
           status: "pending",
           createdAt: new Date(),
