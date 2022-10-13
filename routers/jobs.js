@@ -2,7 +2,9 @@ const { Router } = require("express");
 const Job = require("../models").job;
 const User = require("../models").user;
 const Category = require("../models").role;
+//const Applicant = require("..models").applicant;
 const authMiddleware = require("../auth/middleware");
+const {toData} = require('../auth/jwt')
 
 const router = new Router();
 
@@ -27,7 +29,7 @@ router.get("/:id", async (req, res, next) => {
     const theOne = await Job.findByPk(id, {
       include: [
         { model: User, attributes: ["name", "email", "profilePic"] },
-        { model: Category, attributes: ["name"] },
+        { model: Category, attributes: ["name",'id'] },
       ],
     });
     !theOne && res.status(404).send("no Job Found");
@@ -37,10 +39,31 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.get("/myjobs/recruiter", authMiddleware, async (req, res, next) => {
+  try {
+    const auth =
+    req.headers.authorization && req.headers.authorization.split(" ");
+  const uId = toData(auth[1]).userId;
+  const myJobs = await Job.findAll({
+    where: { userId: uId },
+  });
+    res.status(200).send(myJobs)
+  } catch (error) {
+    next(error)
+  }
+});
+
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const newJob = await Job.create(req.body);
-    res.status(200).send(newJob);
+    const theOneToSend = await Job.findByPk(newJob.id, {
+      include: [
+        { model: User, attributes: ["name", "email", "profilePic"] },
+        { model: Category, attributes: ["name",'id'] },
+      ],
+    });
+    console.log(theOneToSend)
+    res.status(200).send(theOneToSend);
   } catch (error) {
     next(error);
   }
@@ -48,6 +71,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
 
 router.delete("/:id", authMiddleware, async (req, res, next) => {
   const { id } = req.params;
+  console.log(id)
   try {
     const auth =
       req.headers.authorization && req.headers.authorization.split(" ");
@@ -55,8 +79,29 @@ router.delete("/:id", authMiddleware, async (req, res, next) => {
 
     const theOne = await Job.findByPk(id);
     !theOne && res.status(404).send("No job found!");
-    uId !== theOne.userId && res.status(401).send("Unauthorized!");
-    await theOne.destroy();
+    uId !== theOne.userId && res.status(401).send("Unauthorized!!!!!");
+    const destroyed = await theOne.destroy();
+    res.send(destroyed);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.patch("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const theOne = await Job.findByPk(id);
+    !theOne && req.status(404).send("Not found!");
+    const updatedOne = await theOne.update(req.body);
+    const theOneToSend = await Job.findByPk(updatedOne.id, {
+      include: [
+        { model: User, attributes: ["name", "email", "profilePic"] },
+        { model: Category, attributes: ["name",'id'] },
+      ],
+    });
+    
+    res.status(200).send(theOneToSend);
+   
   } catch (error) {
     next(error);
   }
