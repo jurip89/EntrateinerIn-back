@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       job.belongsTo(models.user, { foreignKey: "userId" });
       job.belongsToMany(models.user, {
         through: "applicants",
+        as: "applicantsJob",
         foreignKey: "jobId",
       });
       job.belongsTo(models.role, { foreignKey: "categoryId" });

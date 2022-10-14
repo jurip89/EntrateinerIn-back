@@ -5,7 +5,8 @@ const jobsRouter = require("./routers/jobs");
 const authRouter = require("./routers/auth");
 const imagesRoute = require("./routers/images");
 const rolesRouter = require("./routers/roles");
-const reviewsRouter =require('./routers/reviews')
+const reviewsRouter = require("./routers/reviews");
+const applicantRouter = require("./routers/applicant");
 const PORT = 4000;
 const app = express();
 
@@ -19,4 +20,5 @@ app.use("/auth", authRouter);
 app.use("/images", imagesRoute);
 app.use("/roles", rolesRouter);
 app.use("/reviews", reviewsRouter);
+app.use("/apply", applicantRouter);
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));

@@ -14,9 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       user.hasMany(models.job, { foreignKey: "userId" });
       user.belongsToMany(models.job, {
         through: "applicants",
+        as: "jobApplicants",
         foreignKey: "applicantId",
       });
-      user.belongsToMany(models.role, { through: "userRoles", foreignKey: "userId" });
+      user.belongsToMany(models.role, {
+        through: "userRoles",
+        foreignKey: "userId",
+      });
     }
   }
   user.init(
@@ -24,7 +28,11 @@ module.exports = (sequelize, DataTypes) => {
       name: { type: DataTypes.STRING, allowNull: false },
       email: { type: DataTypes.STRING, allowNull: false, unique: true },
       password: { type: DataTypes.STRING, allowNull: false },
-      isRecruiter: { type: DataTypes.BOOLEAN, allowNull: false,defaultValue:false },
+      isRecruiter: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       intro: { type: DataTypes.TEXT },
       profilePic: {
         type: DataTypes.STRING,

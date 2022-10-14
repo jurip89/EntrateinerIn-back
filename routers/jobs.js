@@ -57,20 +57,23 @@ router.get("/myjobs/recruiter", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.get("/myjobs/recruiter/:id",authMiddleware, async (req, res, next) => {
+router.get("/myjobs/recruiter/:id", authMiddleware, async (req, res, next) => {
   const { id } = req.params;
   try {
-    const auth =
-      req.headers.authorization && req.headers.authorization.split(" ");
-    const uId = toData(auth[1]).userId;
+    const uId = req.user.userId;
 
     const theOne = await Job.findByPk(id, {
-      where: { userId: uId},
-      
+      where: { userId: uId },
+
       include: [
         { model: User, attributes: ["name", "email", "profilePic"] },
         { model: Category, attributes: ["name", "id"] },
-        { model: User, throug: {attributes: ["status"] } },
+        {
+          model: User,
+          as: "applicantsJob",
+          attributes: ["name", "profilePic", "id"],
+          through: { attributes: ["status"] },
+        },
       ],
     });
     !theOne && res.status(404).send("Not Found!!");
