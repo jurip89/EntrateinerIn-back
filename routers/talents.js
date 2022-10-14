@@ -3,7 +3,8 @@ const User = require("../models").user;
 const Image = require("../models").image;
 const Review = require("../models").review;
 const Role = require("../models").role;
-const UserRole = require("../models").userRole;
+const Job = require("../models").job;
+const authMiddleware = require("../auth/middleware");
 const router = new Router();
 
 router.get("/", async (req, res, next) => {
@@ -11,11 +12,11 @@ router.get("/", async (req, res, next) => {
     const talents = await User.findAll({
       attributes: ["name", "profilePic", "id"],
       where: { isRecruiter: false },
-     include:{
-          model: Role,
-          attributes: ["name", "id"],
-          through: { attributes: [] },
-        },
+      include: {
+        model: Role,
+        attributes: ["name", "id"],
+        through: { attributes: [] },
+      },
     });
     res.send(talents);
   } catch (error) {
@@ -35,7 +36,7 @@ router.get("/:id", async (req, res, next) => {
         {
           model: Review,
           attributes: ["comment", "id", "updatedAt", "title"],
-          include: { model: User, attributes: ["name", "profilePic","id"] },
+          include: { model: User, attributes: ["name", "profilePic", "id"] },
         },
         {
           model: Role,
@@ -46,6 +47,22 @@ router.get("/:id", async (req, res, next) => {
     });
     !theOne && res.status(404).send("Missing Person!");
     res.status(200).send(theOne);
+  } catch (error) {
+    next(error);
+  }
+});
+router.get("/myjobs/talent", authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const myJobs = await User.findByPk(id, {
+      attributes: [],
+      include: {
+        model: Job,
+        as: "jobApplicants",
+        through: { attributes: ["status"] },
+      },
+    });
+    res.send(myJobs.jobApplicants);
   } catch (error) {
     next(error);
   }

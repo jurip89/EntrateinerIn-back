@@ -9,7 +9,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const uId = req.user.id;
     const newReview = await Review.create({ ...req.body, authorId: uId });
-    res.status(200).send(newReview);
+    res.status(200).send("you did it!");
   } catch (error) {
     next(error);
   }
