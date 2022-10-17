@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
         through: "applicants",
         as: "applicantsJob",
         foreignKey: "jobId",
+         onDelete: 'CASCADE',
+        onUpdate:'CASCADE'
       });
       job.belongsTo(models.role, { foreignKey: "categoryId" });
     }

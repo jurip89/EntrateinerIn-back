@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const Review = require("../models").review;
 const authMiddleware = require("../auth/middleware");
+const User =require('../models').user
 const { toData } = require("../auth/jwt");
 
 const router = new Router();
@@ -8,8 +9,12 @@ const router = new Router();
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const uId = req.user.id;
+    console.log(req.body)
+    console.log(uId)
     const newReview = await Review.create({ ...req.body, authorId: uId });
-    res.status(200).send("you did it!");
+    const newToSend = await Review.findByPk(newReview.id, { include: User })
+    console.log(newToSend)
+    res.status(200).send(newToSend);
   } catch (error) {
     next(error);
   }

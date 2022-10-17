@@ -35,8 +35,8 @@ router.get("/:id", async (req, res, next) => {
         { model: Image, attributes: ["source", "id"] },
         {
           model: Review,
-          attributes: ["comment", "id", "updatedAt", "title"],
-          include: { model: User, attributes: ["name", "profilePic", "id"] },
+          attributes: ["comment", "id", "updatedAt", "title",'rating'],
+          include: { model: User,as:'authorReview', attributes: ["name", "profilePic", "id"] },
         },
         {
           model: Role,
@@ -51,21 +51,6 @@ router.get("/:id", async (req, res, next) => {
     next(error);
   }
 });
-router.get("/myjobs/talent", authMiddleware, async (req, res, next) => {
-  try {
-    const { id } = req.user;
-    const myJobs = await User.findByPk(id, {
-      attributes: [],
-      include: {
-        model: Job,
-        as: "jobApplicants",
-        through: { attributes: ["status"] },
-      },
-    });
-    res.send(myJobs.jobApplicants);
-  } catch (error) {
-    next(error);
-  }
-});
+
 
 module.exports = router;

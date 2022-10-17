@@ -6,6 +6,7 @@ const Applicant = require("../models").applicant;
 const authMiddleware = require("../auth/middleware");
 const { toData } = require("../auth/jwt");
 
+
 const router = new Router();
 
 router.get("/", async (req, res, next) => {
@@ -72,7 +73,7 @@ router.get("/myjobs/recruiter/:id", authMiddleware, async (req, res, next) => {
           model: User,
           as: "applicantsJob",
           attributes: ["name", "profilePic", "id"],
-          through: { attributes: ["status"] },
+          through: { attributes: ["status",'id'] },
         },
       ],
     });
@@ -83,9 +84,31 @@ router.get("/myjobs/recruiter/:id", authMiddleware, async (req, res, next) => {
   }
 });
 
+router.get("/myjobs/talent", authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.user;
+    const myJobs = await User.findByPk(id, {
+      attributes: [],
+      include: {
+        model: Job,
+        as: "jobApplicants",
+        through: { attributes: ["status"] },
+        include: [{model:User,attributes:['name','id','profilePic']
+},{model: Category, attributes: ["name", "id"] }]      },
+    });
+    res.send(myJobs.jobApplicants);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
+    
+    console.log(req.body)
     const newJob = await Job.create(req.body);
+    
+    console.log(newJob)
     const theOneToSend = await Job.findByPk(newJob.id, {
       include: [
         { model: User, attributes: ["name", "email", "profilePic"] },
