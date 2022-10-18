@@ -73,7 +73,8 @@ router.get("/myjobs/recruiter/:id", authMiddleware, async (req, res, next) => {
           model: User,
           as: "applicantsJob",
           attributes: ["name", "profilePic", "id"],
-          through: { attributes: ["status",'id'] },
+          through: { attributes: ["status", 'id'] },
+          include:{model:Category,  attributes:['id','name'],through: { attributes: [] }}
         },
       ],
     });
