@@ -2,7 +2,6 @@ const { Router } = require("express");
 const Review = require("../models").review;
 const authMiddleware = require("../auth/middleware");
 const User = require("../models").user;
-const { toData } = require("../auth/jwt");
 
 const router = new Router();
 
@@ -15,7 +14,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
     const newToSend = await Review.findByPk(newReview.id, {
       include: User,
       as: "authorReview",
-      attributes: ["name"],
+      attributes: ["name", "id"],
     });
     console.log(newToSend);
     res.status(200).send(newToSend);

@@ -35,8 +35,12 @@ router.get("/:id", async (req, res, next) => {
         { model: Image, attributes: ["source", "id"] },
         {
           model: Review,
-          attributes: ["comment", "id", "updatedAt", "title",'rating'],
-          include: { model: User,as:'authorReview', attributes: ["name", "profilePic", "id"] },
+          attributes: ["comment", "id", "updatedAt", "title", "rating"],
+          include: {
+            model: User,
+            as: "authorReview",
+            attributes: ["name", "profilePic", "id"],
+          },
         },
         {
           model: Role,
@@ -52,5 +56,16 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+router.patch("/:id", async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const theOne = await User.findByPk(id);
+    !theOne && res.status(404).send("penis");
+    const theEditedOne = await theOne.update(req.body);
+    res.status(200).send(theEditedOne);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = router;
