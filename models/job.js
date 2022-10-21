@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       description: { type: DataTypes.TEXT, allowNull: false },
       duration: { type: DataTypes.STRING, allowNull: false },
       paid: { type: DataTypes.BOOLEAN, allowNull: false },
-      amount: { type: DataTypes.INTEGER },
+      amount: { type: DataTypes.INTEGER, defaultValue:0 },
       location: { type: DataTypes.STRING, allowNull: false },
       lat: { type: DataTypes.FLOAT, allowNull: false },
       lng: { type: DataTypes.FLOAT, allowNull: false },

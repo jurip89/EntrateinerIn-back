@@ -109,20 +109,22 @@ router.get("/myjobs/talent", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.post("/", authMiddleware, async (req, res, next) => {
+router.post("/",  async (req, res, next) => {
   try {
-    console.log(req.body);
+    console.log({body:req.body});
     const newJob = await Job.create(req.body);
 
-    console.log(newJob);
-    const theOneToSend = await Job.findByPk(newJob.id, {
+    console.log({newJob});
+    if(newJob){const theOneToSend = await Job.findByPk(newJob.id, {
       include: [
         { model: User, attributes: ["name", "email", "profilePic"] },
         { model: Category, attributes: ["name", "id"] },
       ],
     });
-    console.log(theOneToSend);
-    res.status(200).send(theOneToSend);
+    console.log({theOneToSend});
+      res.status(200).send(theOneToSend);
+    }
+    res.status(400).send('Bad, really bad!')
   } catch (error) {
     next(error);
   }
@@ -152,6 +154,7 @@ router.patch("/:id", async (req, res, next) => {
     const theOne = await Job.findByPk(id);
     !theOne && req.status(404).send("Not found!");
     const updatedOne = await theOne.update(req.body);
+    if(updatedOne){
     const theOneToSend = await Job.findByPk(updatedOne.id, {
       include: [
         { model: User, attributes: ["name", "email", "profilePic"] },
@@ -159,7 +162,11 @@ router.patch("/:id", async (req, res, next) => {
       ],
     });
 
-    res.status(200).send(theOneToSend);
+      res.status(200).send(theOneToSend);
+    } else {
+      res.status(400).send('Bad, really bad request!')
+    }
+    
   } catch (error) {
     next(error);
   }

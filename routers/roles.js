@@ -1,7 +1,9 @@
 const { Router } = require("express");
 const Role = require("../models").role;
 const UserRole = require("../models").userRole;
+const authMiddleware = require('../auth/middleware')
 const router = new Router();
+
 
 router.get("/", async (req, res, next) => {
   try {
@@ -12,7 +14,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/", async (req, res, next) => {
+router.post("/",authMiddleware, async (req, res, next) => {
   try {
     console.log(req.body);
     const newSkill = await UserRole.create(req.body);
@@ -22,5 +24,7 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
+
 
 module.exports = router;

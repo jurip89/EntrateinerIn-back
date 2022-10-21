@@ -8,13 +8,14 @@ const router = new Router();
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const uId = req.user.id;
-    console.log(req.body);
-    console.log(uId);
+    console.log({body:req.body});
+    //console.log(uId);
     const newReview = await Review.create({ ...req.body, authorId: uId });
+    console.log(newReview)
     const newToSend = await Review.findByPk(newReview.id, {
-      include: User,
-      as: "authorReview",
-      attributes: ["name", "id"],
+     include:{ model: User,
+            as: "authorReview",
+            attributes: ["name", "profilePic", "id"],}
     });
     console.log(newToSend);
     res.status(200).send(newToSend);
