@@ -109,7 +109,7 @@ router.get("/myjobs/talent", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.post("/",  async (req, res, next) => {
+router.post("/",authMiddleware,  async (req, res, next) => {
   try {
     console.log({body:req.body});
     const newJob = await Job.create(req.body);
