@@ -14,7 +14,7 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.post("/",authMiddleware, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     console.log(req.body);
     const newSkill = await UserRole.create(req.body);

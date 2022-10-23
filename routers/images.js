@@ -16,7 +16,7 @@ router.delete("/:id", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.post("/",authMiddleware, async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const newImg = await Image.create(req.body);
     res.status(200).send(newImg);
