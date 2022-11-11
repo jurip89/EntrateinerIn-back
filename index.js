@@ -7,7 +7,8 @@ const imagesRoute = require("./routers/images");
 const rolesRouter = require("./routers/roles");
 const reviewsRouter = require("./routers/reviews");
 const applicantRouter = require("./routers/applicant");
-const PORT = 4000;
+require('dotenv').config()
+const PORT = process.env.PORT || 4000;
 const app = express();
 
 app.use(corsMiddleWare());
